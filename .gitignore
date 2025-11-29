@@ -1,0 +1,35 @@
+# 忽略 Node.js 依赖目录
+node_modules/
+.pnp
+.pnp.js
+
+# 忽略 Next.js 编译输出目录
+.next/
+out/
+
+# 忽略构建产生的生产环境文件
+build/
+dist/
+
+# 忽略本地环境变量文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 忽略日志文件
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 忽略系统文件
+.DS_Store
+Thumbs.db
+
+# 忽略编辑器配置
+.vscode/
+.idea/
+*.swp
+*.swo
+

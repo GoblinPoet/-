@@ -1,0 +1,109 @@
+import { ContentItem } from "@/types/content";
+
+export const MOCK_POSTS: ContentItem[] = [
+  {
+    id: 1,
+    type: 'comic',
+    title: "翻斗花园的午后时光",
+    excerpt: "今天天气真好，就像图图说的那样，生活充满了惊喜。记录一下今天的漫画创作灵感。",
+    category: "comic",
+    coverImage: "https://images.unsplash.com/photo-1572379524097-f58c7314d10f?auto=format&fit=crop&q=80&w=800",
+    publishDate: "2023-10-24",
+    readTime: "5 min",
+    likes: 120,
+    comicImages: [
+      "https://images.unsplash.com/photo-1572379524097-f58c7314d10f?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1582562124811-c8ed263c9f84?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1534644107580-3a4dbd494a95?auto=format&fit=crop&q=80&w=800"
+    ],
+    chapters: Array.from({ length: 12 }, (_, i) => ({ id: i + 1, title: `第 ${i + 1} 话: 快乐的${['开始', '午后', '冒险', '发现'][i % 4]}` }))
+  },
+  {
+    id: 2,
+    type: 'product',
+    title: "Focus: 极简番茄钟 App",
+    excerpt: "一款让你像图图吃冰淇淋一样专注的效率工具。无广告，纯净体验。",
+    category: "product",
+    coverImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=800",
+    price: "Free",
+    publishDate: "2023-10-22",
+    readTime: "v2.1.0",
+    likes: 85,
+    appInfo: {
+        version: "2.1.0",
+        size: "45 MB",
+        rating: 4.8,
+        platform: "iOS / Android",
+        downloadLink: "#",
+        features: ["极简设计风格", "支持白噪音模式", "数据统计报表", "完全免费无内购"],
+        pricing: [
+            { label: "月度会员", price: "¥ 6.00", desc: "解锁所有白噪音" },
+            { label: "年度会员", price: "¥ 58.00", desc: "极具性价比，每天仅需 0.1 元", recommend: true },
+            { label: "永久买断", price: "¥ 128.00", desc: "一次付费，终身享受更新" },
+        ],
+        screenshots: [
+            "https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&q=80&w=400",
+            "https://images.unsplash.com/photo-1616348436133-3d0781747805?auto=format&fit=crop&q=80&w=400"
+        ]
+    }
+  },
+  {
+    id: 3,
+    type: 'video',
+    title: "Vlog: 寻找城市的色彩",
+    excerpt: "带着相机走遍了城市的角落，发现了许多像动画片里一样的色彩搭配。",
+    category: "video",
+    coverImage: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=80&w=800",
+    duration: "12:30",
+    publishDate: "2023-10-20",
+    readTime: "Watch",
+    likes: 210,
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    videoMeta: {
+        director: "胡图图",
+        studio: "翻斗花园制片厂",
+        cast: ["图图", "小怪", "健康哥哥"],
+        rating: 9.2
+    }
+  },
+  {
+    id: 4,
+    type: 'article',
+    title: "为什么我们都爱看动画片？",
+    excerpt: "长大后才发现，小时候看不懂的情节，现在看却泪流满面。深度解析童心。",
+    category: "article",
+    coverImage: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=800",
+    publishDate: "2023-10-18",
+    readTime: "10 min",
+    likes: 342,
+    content: `
+      <p>记得小时候，每天放学最期待的事情就是打开电视机，等着那一曲熟悉的片头曲响起。那时候的烦恼很简单：作业没写完，冰淇淋化了，或者是隔壁班的小花不理我了。</p>
+      <br/>
+      <h3>童心的避风港</h3>
+      <p>长大后，我们面对的是无尽的KPI、复杂的人际关系和房贷车贷的压力。动画片成了一个避风港。在《大耳朵图图》里，胡图图即使犯了错，也总有爸爸妈妈温柔的教导和原谅。这种无条件的爱，是成年人世界里最稀缺的奢侈品。</p>
+      <br/>
+      <h3>色彩的治愈力量</h3>
+      <p>高饱和度的色彩，不仅仅是视觉的刺激，更是情绪的良药。心理学研究表明，明亮的黄色能带来快乐，温暖的粉色能抚平焦虑。这也是为什么我把博客设计成这样的原因——希望每一个进来的人，都能感受到多巴胺的分泌。</p>
+      <br/>
+      <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=800" alt="Childhood" class="rounded-xl shadow-md my-4" />
+      <h3>结语</h3>
+      <p>保持一颗童心，并不是拒绝长大，而是在看清生活的真相后，依然热爱生活。愿我们都能像图图一样，永远对世界充满好奇。</p>
+    `
+  },
+  {
+    id: 5,
+    type: 'comic',
+    title: "新连载：猫咪的秘密日记",
+    excerpt: "第一话：原来人类在猫眼里是这样奇怪的生物...",
+    category: "comic",
+    coverImage: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&q=80&w=800",
+    publishDate: "2023-10-15",
+    readTime: "3 min",
+    likes: 560,
+    comicImages: [
+        "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&q=80&w=800",
+        "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&q=80&w=800"
+    ]
+  }
+];
+

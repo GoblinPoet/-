@@ -1,0 +1,183 @@
+图图风格全能静态博客 - 生产级项目规划书 (v3.0)
+
+1. 项目愿景与核心目标
+
+打造一个视觉风格独特（大耳朵图图风）、内容类型丰富、维护自动化且**高度智能（集成 Gemini AI）**的现代静态网站。
+目标是实现“一次开发，通过文件管理内容”，无需数据库维护，且在 SEO 和多端体验上达到商业级标准。
+
+2. 技术架构选型 (Tech Stack)
+
+为了保证“成熟、好维护、SEO友好”，我们锁定以下技术栈：
+
+核心框架: Next.js 14+ (App Router) - 利用其强大的 SSG (Static Site Generation) 能力，完美解决 SEO 和首屏性能。
+
+样式引擎: Tailwind CSS - 快速构建原子化样式，易于维护主题配置。
+
+动画库: Framer Motion - 实现丝滑的页面转场和微交互（图图风格的核心灵魂）。
+
+AI 引擎: Google Gemini API - 用于构建时的内容增强（摘要生成、标签提取）和运行时的智能搜索。
+
+部署: Vercel 或 GitHub Pages (配合 Actions)。
+
+3. 文件系统即数据库 (FileSystem as Database)
+
+这是本项目“方便维护”的核心。我们摒弃传统数据库，完全基于严格的文件夹结构和自动化脚本来管理内容。
+
+3.1 根目录结构规范
+
+/root
+  /content               # [核心] 所有媒体资源源文件
+    ├── /comics          # 漫画库
+    │    └── /comic-001-cat-diary  # {slug} 文件夹
+    │         ├── meta.json        # 漫画元数据 (标题, 简介, 作者, 状态)
+    │         ├── cover.jpg        # [必需] 列表卡片封面 (3:4 比例)
+    │         ├── hero.jpg         # [可选] 详情页顶部大图 (16:9 比例)
+    │         ├── /ch-01           # 第一话
+    │         │    ├── 01.jpg      # 图片按顺序命名
+    │         │    └── 02.jpg
+    │         └── /ch-02           # 第二话...
+    │
+    ├── /videos          # 视频库
+    │    └── /video-001-vlog-city
+    │         ├── meta.json        # (含 videoUrl, director, cast, rating)
+    │         ├── cover.jpg        # [必需] 视频封面
+    │         └── poster.jpg       # [可选] 播放器未播放时的占位图
+    │
+    ├── /products        # 产品推荐库
+    │    └── /app-focus-timer
+    │         ├── meta.json        # (含 version, pricing[], downloadUrl)
+    │         ├── icon.png         # [必需] 产品图标 (1:1 比例)
+    │         └── /gallery         # 截图文件夹 (自动扫描用于画廊展示)
+    │              ├── shot-1.jpg
+    │              └── shot-2.jpg
+    │
+    └── /articles        # 文章库
+         ├── article-001.md        # Markdown 文件 (含 Frontmatter)
+         └── /assets               # 文章内引用的图片
+              └── image-001.jpg
+
+  /scripts               # [自动化] 维护脚本
+    └── gen-content-index.ts       # 构建前运行：扫描 content 目录，生成全站 JSON 索引
+
+
+4. 媒体类型与图片处理机制 (详细逻辑)
+
+为了解决“图片怎么配，哪里显示什么”的问题，前端组件将严格遵循以下逻辑。
+
+4.1 通用图片规则
+
+格式优化：构建脚本需自动将大图转换为 WebP 格式（Next/Image 组件可自动处理）。
+
+懒加载：列表页图片默认 lazy，详情页首屏图片（如封面）强制 eager 加载以提升 LCP (Largest Contentful Paint)。
+
+占位符：所有图片加载失败时，显示一个“图图风格”的 SVG 占位图（如一个灰色的问号气泡）。
+
+4.2 各类型详情页逻辑
+
+A. 漫画 (Comics)
+
+数据源：content/comics/{slug}/
+
+封面逻辑：列表页取 cover.jpg。
+
+阅读器逻辑：
+
+脚本在构建时扫描 ch-xx 文件夹，生成 { chapterId: 1, images: ["01.jpg", "02.jpg"] } 结构的 JSON。
+
+前端直接根据这个 JSON 渲染图片列表。
+
+更新机制：只需新建文件夹 ch-03 并丢入图片，重新部署即可。
+
+B. 视频 (Videos)
+
+数据源：content/videos/{slug}/
+
+封面逻辑：列表页取 cover.jpg。
+
+详情页：
+
+背景层：取 cover.jpg 做全屏高斯模糊。
+
+播放器：优先使用 poster.jpg，无则使用 cover.jpg。
+
+元数据：导演、演员、评分从 meta.json 读取。
+
+C. 产品 (Products)
+
+数据源：content/products/{slug}/
+
+图标逻辑：列表页和详情页头部取 icon.png。
+
+画廊逻辑：前端读取 /gallery/ 下的所有图片，渲染为横向滑动容器 (Scroll Snap)。
+
+会员价格：meta.json 中配置 pricing 数组，包含 isRecommended 字段控制高亮样式。
+
+D. 文章 (Articles)
+
+数据源：content/articles/*.md
+
+封面逻辑：Markdown Frontmatter 中的 cover: ./assets/xxx.jpg。
+
+正文图片：支持 Markdown 标准语法，编译时自动转化为优化的 <Image> 组件。
+
+
+6. SEO 与双端体验优化
+
+6.1 SEO 策略
+
+Sitemap 自动生成：构建时自动根据 content 目录生成 sitemap.xml。
+
+结构化数据 (JSON-LD)：
+
+漫画页：注入 ComicSeries Schema。
+
+视频页：注入 VideoObject Schema。
+
+产品页：注入 SoftwareApplication Schema。
+
+Meta 标签管理：使用 next-seo 或 Next.js 内置 Metadata API，确保每个页面有独一无二的 title 和 og:image。
+
+6.2 移动端 (Mobile) vs 桌面端 (Desktop) 差异化
+
+首页布局：
+
+Mobile: 垂直流布局，卡片全宽，方便大拇指点击。
+
+Desktop: Masonry (瀑布流) 或 3-4 列 Grid，展示更多信息密度。
+
+漫画阅读器：
+
+Mobile: 支持双击放大，左右滑动翻页。
+
+Desktop: 保持单列长图模式，支持键盘方向键翻页。
+
+7. 维护与更新工作流 (SOP)
+
+如何让这个网站长期存活且容易更新？
+
+场景 A：发布一篇新漫画
+
+在 content/comics/ 下新建文件夹 my-new-comic。
+
+放入 cover.jpg 和 meta.json (写好标题)。
+
+创建 ch-01 文件夹，把画好的图 01.jpg, 02.jpg... 拖进去。
+
+执行 npm run build (本地预览) 或 git push (触发自动部署)。
+
+结果：网站自动生成了新漫画的详情页、阅读页，并在首页列表置顶显示。
+
+场景 B：推荐一个新 App
+
+在 content/products/ 新建文件夹。
+
+放入 icon.png, meta.json 和几张截图到 gallery/。
+
+git push。
+
+结果：产品页自动生成下载按钮、价格表、截图画廊。
+
+8. 总结
+
+这份规划书定义了一个基于文件系统驱动的现代静态网站。它不需要复杂的后台管理系统（CMS），只需要管理文件夹即可。
+结合 Next.js 的性能优化和 Gemini 的智能处理，这将是一个既有童趣灵魂，又有商业级技术底座的成熟产品。

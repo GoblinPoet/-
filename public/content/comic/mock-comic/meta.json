@@ -1,0 +1,16 @@
+{
+  "title": "示例漫画：图图的快乐一天",
+  "excerpt": "这是一个示例漫画，你可以复制这个文件夹来创建新的漫画。",
+  "publishDate": "2023-11-29",
+  "coverImage": "https://images.unsplash.com/photo-1572379524097-f58c7314d10f?auto=format&fit=crop&q=80&w=800",
+  "category": "comic",
+  "tags": ["快乐", "日常"],
+  "comicImages": [
+    "https://images.unsplash.com/photo-1572379524097-f58c7314d10f?auto=format&fit=crop&q=80&w=800",
+    "https://images.unsplash.com/photo-1582562124811-c8ed263c9f84?auto=format&fit=crop&q=80&w=800"
+  ],
+  "chapters": [
+    { "id": 1, "title": "第 1 话" }
+  ]
+}
+
